@@ -20,7 +20,7 @@ import solutions.Solution;
  */
 public class TS_QBF extends AbstractTS<Integer> {
 	
-	private final Integer fake = new Integer(-1);
+	protected final Integer fake = new Integer(-1);
 
 	/**
 	 * Constructor for the TS_QBF class. An inverse QBF objective function is
