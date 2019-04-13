@@ -20,6 +20,28 @@ public class Solution<E> extends ArrayList<E> {
 	public String toString() {
 		return "Solution: cost=[" + cost + "], size=[" + this.size() + "], elements=" + super.toString();
 	}
+	
+	@Override
+	public boolean equals(Object arg0) {
+		if (arg0 == null) {
+			return false;
+		}
+		
+		if (arg0 instanceof Solution) {
+			Solution<?> arrayList = (Solution<?>) arg0;
+			if (this.size() != arrayList.size()) {
+				return false;
+			}
+			
+			for (int i = 0; i < this.size(); i++) {
+				if (!this.get(i).equals(arrayList.get(i))) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
 
 }
 
