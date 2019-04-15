@@ -8,15 +8,17 @@ import problems.qbf.solvers.TS_QBF;
 import problems.qbfpt.triples.ForbiddenTriplesBuilder;
 import solutions.Solution;
 
-public class TS_QBFPT_Probabilistic extends TS_QBF {
-	
-	private ForbiddenTriplesBuilder ftBuilder;
+public class TS_QBFPT extends TS_QBF{
 
-	public TS_QBFPT_Probabilistic(Integer tenure, Integer iterations, String filename) throws IOException {
+	private ForbiddenTriplesBuilder ftBuilder;
+	private boolean isBestImproving;
+
+	public TS_QBFPT(Integer tenure, Integer iterations, String filename, boolean isBestImproving) throws IOException {
 		super(tenure, iterations, filename);
 		this.ftBuilder = new ForbiddenTriplesBuilder(ObjFunction.getDomainSize());
+		this.isBestImproving = isBestImproving;
 	}
-	
+
 	@Override
 	public void updateCL() {
 		if (!this.incumbentSol.isEmpty()) {
@@ -31,7 +33,7 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 			}
 		}
 	}
-
+	
 	@Override
 	public Solution<Integer> neighborhoodMove() {
 
@@ -48,6 +50,9 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 					minDeltaCost = deltaCost;
 					bestCandIn = candIn;
 					bestCandOut = null;
+					if (!isBestImproving) {
+						break;
+					}
 				}
 			}
 		}
@@ -59,10 +64,14 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 					minDeltaCost = deltaCost;
 					bestCandIn = null;
 					bestCandOut = candOut;
+					if (!isBestImproving) {
+						break;
+					}
 				}
 			}
 		}
 		// Evaluate exchanges
+		EXIT:
 		for (Integer candIn : CL) {
 			for (Integer candOut : incumbentSol) {
 				Double deltaCost = ObjFunction.evaluateExchangeCost(candIn, candOut, incumbentSol);
@@ -71,6 +80,9 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 						minDeltaCost = deltaCost;
 						bestCandIn = candIn;
 						bestCandOut = candOut;
+						if (!isBestImproving) {
+							break EXIT;
+						}
 					}
 				}
 			}
@@ -96,18 +108,4 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 		
 		return null;
 	}
-	
-	public static void main(String[] args) throws IOException {
-		long startTime = System.currentTimeMillis();
-		TS_QBF tabusearch = new TS_QBFPT_Probabilistic(10, 1000000, "instances/qbf020");
-		Solution<Integer> bestSol = tabusearch.solve();
-		System.out.println("maxVal = " + bestSol);
-		long endTime   = System.currentTimeMillis();
-		long totalTime = endTime - startTime;
-		System.out.println("Time = "+(double)totalTime/(double)1000+" seg");
-		
-	}
-	
-	
-
 }
