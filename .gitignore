@@ -15,3 +15,4 @@ TS_Framework/bin/problems/qbfpt/solvers/TS_QBFPT_Diversification.class
 TS_Framework/bin/problems/qbfpt/solvers/TS_QBFPT_Probabilistic.class
 TS_Framework/bin/problems/qbfpt/triples/Triple.class
 TS_Framework/bin/solutions/Solution.class
+TS_Framework/src/problems/qbfpt/solvers/rand.java
