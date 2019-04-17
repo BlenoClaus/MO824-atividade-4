@@ -1,3 +1,17 @@
 /.metadata/
 *.class
 .vscode/launch.json
+TS_Framework/bin/problems/qbfpt/triples/ForbiddenTriplesBuilder.class
+TS_Framework/bin/metaheuristics/tabusearch/AbstractTS.class
+TS_Framework/bin/problems/Evaluator.class
+TS_Framework/bin/problems/log/Log.class
+TS_Framework/bin/problems/log/Log$CustomFormatter.class
+TS_Framework/bin/problems/qbf/QBF.class
+TS_Framework/bin/problems/qbf/QBF_Inverse.class
+TS_Framework/bin/problems/qbf/solvers/TS_QBF.class
+TS_Framework/bin/problems/qbfpt/solvers/Report.class
+TS_Framework/bin/problems/qbfpt/solvers/TS_QBFPT.class
+TS_Framework/bin/problems/qbfpt/solvers/TS_QBFPT_Diversification.class
+TS_Framework/bin/problems/qbfpt/solvers/TS_QBFPT_Probabilistic.class
+TS_Framework/bin/problems/qbfpt/triples/Triple.class
+TS_Framework/bin/solutions/Solution.class
