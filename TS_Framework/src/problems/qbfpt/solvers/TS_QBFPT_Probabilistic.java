@@ -12,11 +12,11 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 
 	private ForbiddenTriplesBuilder ftBuilder;
 
-	private float probabilityParameter;
+	private double probabilityParameter;
 	private boolean isBestImproving;
 
 	public TS_QBFPT_Probabilistic(Integer tenure, Integer iterations, String filename, boolean isBestImproving,
-			float probability) throws IOException {
+			double probability) throws IOException {
 		super(tenure, iterations, filename);
 		this.ftBuilder = new ForbiddenTriplesBuilder(ObjFunction.getDomainSize());
 		this.probabilityParameter = probability;
@@ -44,16 +44,18 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 
 		Double minDeltaCost;
 		Integer bestCandIn = null, bestCandOut = null;
-		Double pBestCandIn = null, pBestCandOut = null;
+		//Double pBestCandIn = null, pBestCandOut = null;
 		ArrayList<Double> pIn = new ArrayList<Double>();
 		ArrayList<Double> pOut = new ArrayList<Double>();
 		minDeltaCost = Double.POSITIVE_INFINITY;
+		double x;
 		updateCL();
 
 		// Evaluate insertions
 
 		for (Integer candIn : CL) {
-			double x = rng.nextFloat();
+			x = rng.nextFloat();
+			//System.out.println("in x " + x);
 			pIn.add(x);
 			if (x < probabilityParameter) {
 				Double deltaCost = ObjFunction.evaluateInsertionCost(candIn, incumbentSol);
@@ -61,8 +63,8 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 					if (deltaCost < minDeltaCost) {
 						minDeltaCost = deltaCost;
 						bestCandIn = candIn;
-						pBestCandIn = x;
-						bestCandOut = null;
+						//pBestCandIn = x;
+						//bestCandOut = null;
 						if (!isBestImproving) {
 							break;
 						}
@@ -72,7 +74,8 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 		}
 		// Evaluate removals
 		for (Integer candOut : incumbentSol) {
-			double x = rng.nextFloat();
+			x = rng.nextFloat();
+			//System.out.println("out x " + x);
 			pOut.add(x);
 			if (x < probabilityParameter) {
 				Double deltaCost = ObjFunction.evaluateRemovalCost(candOut, incumbentSol);
@@ -81,7 +84,7 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 						minDeltaCost = deltaCost;
 						bestCandIn = null;
 						bestCandOut = candOut;
-						pBestCandOut = x;
+						//pBestCandOut = x;
 						if (!isBestImproving) {
 							break;
 						}
@@ -95,7 +98,7 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 			if (pIn.get(i) < probabilityParameter) {
 				for (int j = 0; j < incumbentSol.size(); j++) {
 					Integer candOut = incumbentSol.get(j);
-					if (pOut.get(i) < probabilityParameter) {
+					if (pOut.get(j) < probabilityParameter) {
 						Double deltaCost = ObjFunction.evaluateExchangeCost(candIn, candOut, incumbentSol);
 						if ((!TL.contains(candIn) && !TL.contains(candOut))
 								|| incumbentSol.cost + deltaCost < bestSol.cost) {
@@ -103,8 +106,8 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 								minDeltaCost = deltaCost;
 								bestCandIn = candIn;
 								bestCandOut = candOut;
-								pBestCandIn = pIn.get(i);
-								pBestCandOut = pOut.get(i);
+								//pBestCandIn = pIn.get(i);
+								//pBestCandOut = pOut.get(j);
 								if (!isBestImproving) {
 									break;
 								}
@@ -118,7 +121,7 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 		TL.poll();
 		if (bestCandOut != null) {
 			incumbentSol.remove(bestCandOut);
-			pOut.remove(pBestCandOut);
+			//pOut.remove(pBestCandOut);
 			CL.add(bestCandOut);
 			TL.add(bestCandOut);
 		} else {
@@ -128,7 +131,7 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 		if (bestCandIn != null) {
 			incumbentSol.add(bestCandIn);
 			CL.remove(bestCandIn);
-			pIn.remove(pBestCandIn);
+			//pIn.remove(pBestCandIn);
 			TL.add(bestCandIn);
 		} else {
 			TL.add(fake);
@@ -140,7 +143,7 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 
 	public static void main(String[] args) throws IOException {
 		long startTime = System.currentTimeMillis();
-		TS_QBF tabusearch = new TS_QBFPT_Probabilistic(10, 1000000, "instances/qbf020", Boolean.TRUE, (float) 0.25);
+		TS_QBF tabusearch = new TS_QBFPT_Probabilistic(10, 100000000, "instances/qbf020", Boolean.TRUE, (double) 0.25);
 		Solution<Integer> bestSol = tabusearch.solve();
 		System.out.println("maxVal = " + bestSol);
 		long endTime = System.currentTimeMillis();

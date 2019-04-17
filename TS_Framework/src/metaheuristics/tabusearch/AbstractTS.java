@@ -221,7 +221,7 @@ public abstract class AbstractTS<E> {
 		bestSol = createEmptySol();
 		constructiveHeuristic();
 		TL = makeTL();
-		int i = 0;
+		int i;
 		for (i = 0; i < iterations && totalTempo < thirtyMinutes; i++) {
 			neighborhoodMove();
 			if (bestSol.cost > incumbentSol.cost) {
