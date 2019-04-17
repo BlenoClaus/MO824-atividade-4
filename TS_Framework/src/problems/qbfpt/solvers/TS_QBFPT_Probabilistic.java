@@ -12,7 +12,8 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 	
 	private ForbiddenTriplesBuilder ftBuilder;
 
-	public TS_QBFPT_Probabilistic(Integer tenure, Integer iterations, String filename) throws IOException {
+	private float probability;
+	public TS_QBFPT_Probabilistic(Integer tenure, Integer iterations, String filename, float probability) throws IOException {
 		super(tenure, iterations, filename);
 		this.ftBuilder = new ForbiddenTriplesBuilder(ObjFunction.getDomainSize());
 	}
@@ -40,6 +41,7 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 
 		minDeltaCost = Double.POSITIVE_INFINITY;
 		updateCL();
+		
 		// Evaluate insertions
 		for (Integer candIn : CL) {
 			Double deltaCost = ObjFunction.evaluateInsertionCost(candIn, incumbentSol);
