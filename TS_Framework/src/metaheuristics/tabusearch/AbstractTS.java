@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import problems.Evaluator;
+import problems.log.Log;
 import solutions.Solution;
 
 /**
@@ -213,18 +214,27 @@ public abstract class AbstractTS<E> {
 	 * @return The best feasible solution obtained throughout all iterations.
 	 */
 	public Solution<E> solve() {
+		long startTime = System.currentTimeMillis();
+		double thirtyMinutes = 30 * 60;
+		double totalTempo = 0.0;
 
 		bestSol = createEmptySol();
 		constructiveHeuristic();
 		TL = makeTL();
-		for (int i = 0; i < iterations; i++) {
+		int i = 0;
+		for (i = 0; i < iterations && totalTempo < thirtyMinutes; i++) {
 			neighborhoodMove();
 			if (bestSol.cost > incumbentSol.cost) {
 				bestSol = new Solution<E>(incumbentSol);
 				if (verbose)
-					System.out.println("(Iter. " + i + ") BestSol = " + bestSol);
+					Log.geLogger().info("(Iter. " + i + ") BestSol = " + bestSol);
 			}
+			long endTime   = System.currentTimeMillis();
+			long totalTime = endTime - startTime;
+			totalTempo = (double)totalTime/(double)1000;
 		}
+		Log.info("Tempo: "+totalTempo+" s");
+		Log.info("Interações: "+i);
 
 		return bestSol;
 	}
