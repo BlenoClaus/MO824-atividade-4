@@ -93,9 +93,10 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 			}
 		}
 		// Evaluate exchanges
-		for (int i = 0; i < CL.size(); i++) {
-			Integer candIn = CL.get(i);
+		EXIT:
+		for (int i = 0; i < CL.size(); i++) {			
 			if (pIn.get(i) < probabilityParameter) {
+				Integer candIn = CL.get(i);
 				for (int j = 0; j < incumbentSol.size(); j++) {
 					Integer candOut = incumbentSol.get(j);
 					if (pOut.get(j) < probabilityParameter) {
@@ -109,7 +110,7 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 								//pBestCandIn = pIn.get(i);
 								//pBestCandOut = pOut.get(j);
 								if (!isBestImproving) {
-									break;
+									break EXIT;
 								}
 							}
 						}
@@ -143,7 +144,7 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 
 	public static void main(String[] args) throws IOException {
 		long startTime = System.currentTimeMillis();
-		TS_QBF tabusearch = new TS_QBFPT_Probabilistic(10, 100000000, "instances/qbf020", Boolean.TRUE, (double) 0.25);
+		TS_QBF tabusearch = new TS_QBFPT_Probabilistic(10, 10000000, "instances/qbf020", Boolean.TRUE, (double) 0.35);
 		Solution<Integer> bestSol = tabusearch.solve();
 		System.out.println("maxVal = " + bestSol);
 		long endTime = System.currentTimeMillis();

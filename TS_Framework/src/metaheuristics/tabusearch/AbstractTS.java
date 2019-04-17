@@ -164,7 +164,7 @@ public abstract class AbstractTS<E> {
 		incumbentCost = Double.POSITIVE_INFINITY;
 
 		/* Main loop, which repeats until the stopping criteria is reached. */
-		while (!constructiveStopCriteria()) {
+		incumbentSol = createEmptySol();	incumbentSol = createEmptySol();	while (!constructiveStopCriteria()) {
 
 			Double maxCost = Double.NEGATIVE_INFINITY, minCost = Double.POSITIVE_INFINITY;
 			incumbentCost = incumbentSol.cost;
