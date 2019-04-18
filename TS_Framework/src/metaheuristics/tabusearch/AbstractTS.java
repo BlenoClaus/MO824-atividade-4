@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import problems.Evaluator;
-import problems.log.Log;
 import solutions.Solution;
 
 /**
@@ -227,14 +226,14 @@ public abstract class AbstractTS<E> {
 			if (bestSol.cost > incumbentSol.cost) {
 				bestSol = new Solution<E>(incumbentSol);
 				if (verbose)
-					Log.geLogger().info("(Iter. " + i + ") BestSol = " + bestSol);
+					bestSol.appendReport("(Iter. " + i + ") BestSol = " + bestSol);
 			}
 			long endTime   = System.currentTimeMillis();
 			long totalTime = endTime - startTime;
 			totalTempo = (double)totalTime/(double)1000;
 		}
-		Log.info("Tempo: "+totalTempo+" s");
-		Log.info("Interações: "+i);
+		bestSol.appendReport("Tempo: "+totalTempo+" s");
+		bestSol.appendReport("Interações: "+i);
 
 		return bestSol;
 	}

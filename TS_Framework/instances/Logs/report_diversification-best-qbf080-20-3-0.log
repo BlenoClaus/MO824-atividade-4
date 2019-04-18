@@ -1,0 +1,12 @@
+{
+Instancia: instances/qbf080
+Interações: 1000000000
+	Tamanho Tabu: 20
+	Algoritmo: Diversification > Limite = 1000
+		Best Improving: SIM
+			(Iter. 3) BestSol = Solution: cost=[-656.0], size=[30], elements=[23, 28, 3, 48, 72, 37, 50, 60, 6, 18, 54, 2, 42, 35, 8, 43, 31, 13, 24, 25, 65, 47, 41, 66, 44, 73, 9, 49, 36, 74]
+Tempo: 1800.015 s
+Interações: 102245
+
+
+}

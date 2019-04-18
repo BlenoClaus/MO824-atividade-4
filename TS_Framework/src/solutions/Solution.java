@@ -7,6 +7,8 @@ public class Solution<E> extends ArrayList<E> {
 	
 	public Double cost = Double.POSITIVE_INFINITY;
 	
+	private StringBuilder report = new StringBuilder();
+	
 	public Solution() {
 		super();
 	}
@@ -14,11 +16,20 @@ public class Solution<E> extends ArrayList<E> {
 	public Solution(Solution<E> sol) {
 		super(sol);
 		cost = sol.cost;
+		report.append(sol.getReport());
 	}
 
 	@Override
 	public String toString() {
 		return "Solution: cost=[" + cost + "], size=[" + this.size() + "], elements=" + super.toString();
+	}
+	
+	public void appendReport(String info) {
+		report.append(info+"\n");
+	}
+	
+	public String getReport() {
+		return this.report.toString();
 	}
 	
 	@Override

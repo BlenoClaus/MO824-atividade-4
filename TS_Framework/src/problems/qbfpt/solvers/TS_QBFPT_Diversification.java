@@ -3,6 +3,7 @@ package problems.qbfpt.solvers;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -189,42 +190,75 @@ public class TS_QBFPT_Diversification extends TS_QBF{
 		if (stackSolution.isEmpty() || stackCL.isEmpty()) { 
 			return;
 		}
-		Solution<Integer> solutionToRestart = stackSolution.get(0);
-		ArrayList<Integer> CLtoRestart = stackCL.get(0);
-		ArrayDeque<Integer> TLtoRestart = stackTL.get(0);
-		Integer min = Integer.MAX_VALUE;
-		Integer candidate = null;
-		for (Integer elem : frequency.keySet()) {
-			Integer freq = getFrequency(elem);
-			if (min > freq && !solutionToRestart.contains(elem) && CLtoRestart.contains(elem)) {
-				min = freq;
-				candidate = elem;
-			}
-		}
 		
-		if (candidate != null ) {
+		int indexRestart = 0;
+		Solution<Integer> solutionToRestart = stackSolution.get(indexRestart);
+		ArrayList<Integer> CLtoRestart = stackCL.get(indexRestart);
+		ArrayDeque<Integer> TLtoRestart = stackTL.get(indexRestart);
+		Integer candidate1 = getMin(null, solutionToRestart, CLtoRestart);
+		
+		if (candidate1 != null ) {
+			Integer candidate2 = getMin(Arrays.asList(candidate1), solutionToRestart, CLtoRestart);
 			CL = CLtoRestart;
 			TL = TLtoRestart;
 			incumbentSol = solutionToRestart;
-			incumbentSol.add(candidate);
-			CL.remove(candidate);
-			TL.add(candidate);
+			putInSolution(candidate1);
+			if (candidate2 != null) {
+				putInSolution(candidate2);
+			}
 			stackSolution.clear();
 			frequency.clear();
 			stackCL.clear();
+			stackTL.clear();
 			initFrequency();
 			stackSolution.push(incumbentSol);
 			stackCL.push(CL);
+			stackTL.push(TL);
 			interactionsWithoutImprovingSolution = 0;
 			//System.out.println("candidate = "+candidate);
 			//System.out.println("new Solution = "+incumbentSol+" Old Soltion: "+stackSolution.lastElement());
 		}
 	}
 	
+	private void putInSolution(Integer candidate) {
+		incumbentSol.add(candidate);
+		CL.remove(candidate);
+		TL.add(candidate);
+	}
+	
+	private Integer getMin(List<Integer> tabu, Solution<Integer> solutionToRestart, ArrayList<Integer> CLtoRestart) {
+		if (tabu == null || tabu.size() == 0) {
+			Integer min = Integer.MAX_VALUE;
+			Integer candidate = null;
+			for (Integer elem : frequency.keySet()) {
+				Integer freq = getFrequency(elem);
+				if (min > freq && !solutionToRestart.contains(elem) && CLtoRestart.contains(elem)) {
+					min = freq;
+					candidate = elem;
+				}
+			}
+			return candidate;
+			
+		} else {
+			Integer min = Integer.MAX_VALUE;
+			Integer candidate = null;
+			for (Integer elem : frequency.keySet()) {
+				if (tabu.contains(elem)) continue;
+				Integer freq = getFrequency(elem);
+				if (min > freq && !solutionToRestart.contains(elem) && CLtoRestart.contains(elem)) {
+					min = freq;
+					candidate = elem;
+				}
+			}
+			return candidate;
+		}
+	}
+	
 	public static void main(String[] args) throws IOException {
 		long startTime = System.currentTimeMillis();
-		TS_QBF tabusearch = new TS_QBFPT_Diversification(200, 100000, "instances/qbf020",  Boolean.TRUE, 20);
+		TS_QBF tabusearch = new TS_QBFPT_Diversification(20, 100000, "instances/qbf040",  Boolean.TRUE, 100000);
 		Solution<Integer> bestSol = tabusearch.solve();
+		System.out.println(bestSol.getReport());
 		System.out.println("maxVal = " + bestSol);
 		long endTime   = System.currentTimeMillis();
 		long totalTime = endTime - startTime;

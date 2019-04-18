@@ -1,6 +1,8 @@
 package problems.log;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
@@ -10,6 +12,7 @@ public class Log {
 	
 	private static final Logger logger = Logger.getLogger("Reporter"); 
 	private static Log log;
+	private static Map<String, Logger> logMap = new HashMap<>(); 
 	
 	private Log() {
 		FileHandler fh;
@@ -24,14 +27,35 @@ public class Log {
 		} 
     }
 	
+	public static Logger getLogger(String fileName) {
+		Logger logger = logMap.get(fileName);
+		if (logger == null) {
+			FileHandler fh;
+			try {
+				logger = Logger.getLogger(fileName);
+				fh = new FileHandler("instances/"+fileName);
+				fh.setFormatter(new CustomFormatter());
+				logger.addHandler(fh);
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} 
+			logMap.put(fileName, logger);
+			return logger;
+		}
+		return logMap.get(fileName);
+	}
+
 	public static Logger geLogger() {
 		if (log == null) {
 			log = new Log();
 		}
-		return Log.getLogger();
+		return log.getLogger();
 	}
+	
 
-	public static Logger getLogger() {
+	public Logger getLogger() {
 		return logger;
 	}
 	
@@ -41,7 +65,7 @@ public class Log {
 	}
 	
 	
-	private class CustomFormatter extends Formatter {
+	private static class CustomFormatter extends Formatter {
 		 
         @Override
         public String format(LogRecord record) {
