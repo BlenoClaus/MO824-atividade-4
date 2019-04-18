@@ -151,9 +151,20 @@ public class TS_QBFPT_Probabilistic_Diversification extends TS_QBF{
 		// Evaluate exchanges
 		EXIT:
 		for (int i = 0; i < CL.size(); i++) {
+			if (i >= pIn.size()) {
+				x = rng.nextFloat();
+				pIn.add(x);
+				if (x < probabilityParameter) {
+					putIncrease(CL.get(i));
+				}
+			}
 			if (pIn.get(i) < probabilityParameter) {
 				Integer candIn = CL.get(i);
 				for (int j = 0; j < incumbentSol.size(); j++) {
+					if (j >= pOut.size()) {
+						x = rng.nextFloat();
+						pOut.add(x);
+					}
 					Integer candOut = incumbentSol.get(j);
 					if (pOut.get(j) < probabilityParameter) {
 						Double deltaCost = ObjFunction.evaluateExchangeCost(candIn, candOut, incumbentSol);
@@ -194,7 +205,7 @@ public class TS_QBFPT_Probabilistic_Diversification extends TS_QBF{
 		return null;
 	}
 	
-	private void restart(int current_i) {
+	private void restart() {
 		incumbentSol = createEmptySol();
 		CL = makeCL();
 		TL = makeTL();
@@ -248,7 +259,7 @@ public class TS_QBFPT_Probabilistic_Diversification extends TS_QBF{
 		for (i = 0; i < iterations && totalTempo < thirtyMinutes; i++) {
 			if (i - i_best >= iterations*0.05 && i - i_restart >= limitDiversification) {
 				i_restart = i;
-				restart(i);
+				restart();
 			}
 			neighborhoodMove();
 			if (bestSol.cost > incumbentSol.cost) {
@@ -269,7 +280,7 @@ public class TS_QBFPT_Probabilistic_Diversification extends TS_QBF{
 	
 	public static void main(String[] args) throws IOException {
 		long startTime = System.currentTimeMillis();
-		TS_QBF tabusearch = new TS_QBFPT_Probabilistic_Diversification(200, 10000000, "instances/qbf020",  Boolean.TRUE, 0.33);
+		TS_QBF tabusearch = new TS_QBFPT_Probabilistic_Diversification(200, 10000000, "instances/qbf020",  Boolean.FALSE, 0.33);
 		Solution<Integer> bestSol = tabusearch.solve();
 		System.out.println("maxVal = " + bestSol);
 		long endTime   = System.currentTimeMillis();

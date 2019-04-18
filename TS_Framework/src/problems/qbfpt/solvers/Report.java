@@ -40,10 +40,10 @@ public class Report {
 					Log.geLogger().info("Probabilidade: " + PROBABILITY[k]);
 					try {
 						Log.geLogger().info("Best Improving: SIM");
-						new TS_QBFPT_Probabilistic(TENURE[j], INTERATIONS[i], INSTANCES[i], Boolean.TRUE,
+						new TS_QBFPT_Probabilistic_Diversification(TENURE[j], INTERATIONS[i], INSTANCES[i], Boolean.TRUE,
 								PROBABILITY[k]).solve();
 						Log.geLogger().info("Best Improving: NÂO");
-						new TS_QBFPT_Probabilistic(TENURE[j], INTERATIONS[i], INSTANCES[i], Boolean.FALSE,
+						new TS_QBFPT_Probabilistic_Diversification(TENURE[j], INTERATIONS[i], INSTANCES[i], Boolean.FALSE,
 								PROBABILITY[k]).solve();
 
 					}

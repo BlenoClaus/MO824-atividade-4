@@ -94,12 +94,20 @@ public class TS_QBFPT_Probabilistic extends TS_QBF {
 		}
 		// Evaluate exchanges
 		EXIT:
-		for (int i = 0; i < CL.size(); i++) {			
+		for (int i = 0; i < CL.size(); i++) {	
+			if (i >= pIn.size()) {
+				x = rng.nextFloat();
+				pIn.add(x);
+			}
 			if (pIn.get(i) < probabilityParameter) {
 				Integer candIn = CL.get(i);
 				for (int j = 0; j < incumbentSol.size(); j++) {
-					Integer candOut = incumbentSol.get(j);
+					if (j >= pOut.size()) {
+						x = rng.nextFloat();
+						pOut.add(x);
+					}					
 					if (pOut.get(j) < probabilityParameter) {
+						Integer candOut = incumbentSol.get(j);
 						Double deltaCost = ObjFunction.evaluateExchangeCost(candIn, candOut, incumbentSol);
 						if ((!TL.contains(candIn) && !TL.contains(candOut))
 								|| incumbentSol.cost + deltaCost < bestSol.cost) {
