@@ -1,0 +1,12 @@
+{
+Instancia: instances/qbf100
+Interações: 1000000000
+	Tamanho Tabu: 100
+	Algoritmo: Probabilistico > Prob = 0.5
+		Best Improving: NAO
+			(Iter. 3) BestSol = Solution: cost=[-1093.0], size=[41], elements=[68, 11, 57, 43, 38, 22, 49, 74, 30, 10, 24, 23, 62, 21, 95, 47, 91, 44, 93, 33, 69, 7, 86, 3, 14, 71, 64, 18, 51, 17, 63, 25, 31, 81, 28, 79, 45, 77, 19, 16, 29]
+Tempo: 1800.0 s
+Interações: 481884
+
+
+}

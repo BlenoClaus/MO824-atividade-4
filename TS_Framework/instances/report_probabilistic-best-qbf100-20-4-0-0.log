@@ -1,0 +1,12 @@
+{
+Instancia: instances/qbf100
+Interações: 1000000000
+	Tamanho Tabu: 20
+	Algoritmo: Probabilistico > Prob = 0.25
+		Best Improving: SIM
+			(Iter. 34155) BestSol = Solution: cost=[-1000.0], size=[39], elements=[17, 2, 23, 96, 10, 7, 22, 68, 69, 14, 16, 51, 63, 84, 44, 9, 57, 91, 90, 15, 29, 93, 47, 95, 25, 62, 18, 78, 56, 64, 89, 19, 24, 53, 27, 3, 31, 11, 71]
+Tempo: 1800.0 s
+Interações: 1294843
+
+
+}
